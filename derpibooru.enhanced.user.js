@@ -13,9 +13,9 @@
 
     let thumbs = document.querySelectorAll(".thumb, .thumb_small");
 
-    document.querySelector('.block__header .flex__right').innerHTML = '<span id="slider-span">Scale:&nbsp;&nbsp;<input type="range" min="0.25" max="4" value="1" id="scale-range" step="0.05">&nbsp;&nbsp;<span id="tn-scale">1.00</span></span>' + document.querySelector('.block__header .flex__right').innerHTML;
+    document.querySelector('.block__header .flex__right').innerHTML = `<span id="slider-span">Scale:&nbsp;&nbsp;<input type="range" min="0.25" max="4" value="${localStorage.scale || 1}" id="scale-range" step="0.05">&nbsp;&nbsp;<span id="tn-scale">${(+localStorage.scale || 1).toFixed(2)}</span></span><span class="slider-pin"><i class="fa fa-thumbtack"></i></span>${document.querySelector('.block__header .flex__right').innerHTML}`;
 
-    let current_scale = 1;
+    let current_scale = +localStorage.scale || 1;
     let current_size = 150;
 
     document.styleSheets[0].addRule(".interaction--view-or-dl", "color:#4f95db");
@@ -24,7 +24,51 @@
     document.styleSheets[0].addRule(".media -box__header--small", "width:190px;!important;");
     document.styleSheets[0].addRule(".media-box__content--small", "width:190px;!important;");
     document.styleSheets[0].addRule(".interaction--view-or-dl:hover", "color:white; background-color:#4f95db");
-    document.styleSheets[0].addRule("#scale-range", "position:relative;top: 5px;");
+    document.styleSheets[0].addRule(".slider-fixed.snap-right", "right: 0;");
+    document.styleSheets[0].addRule(".slider-fixed.smaller", "right: 126px;");
+    document.styleSheets[0].addRule(".slider-fixed", "position:fixed !important; background-color: #2e3a52; z-index: 1000; top: 0px; right: 359.16px;");
+    document.styleSheets[0].addRule("#slider-span", "position:relative; display: inline-flex; height:32px; padding: 0 12px 0 12px;");
+    document.styleSheets[0].addRule(".slider-pin", "display: inline-flex; height:32px; padding: 0 12px 0 12px; cursor:pointer; color: transparent; -webkit-text-stroke: 1px white;");
+    document.styleSheets[0].addRule(".slider-pin i", "line-height: inherit;");
+    document.styleSheets[0].addRule(".slider-fixed.snap-right + .slider-pin", "z-index: 1000; position: fixed; top: 0px; right: 248.3px;");
+    document.styleSheets[0].addRule(".slider-pin.clicked, .slider-pin:hover", "background: #253247;");
+    document.styleSheets[0].addRule(".slider-pin.clicked", "color: white; -webkit-text-stroke: none;");
+
+    const slider_pin = document.querySelector(".slider-pin");
+    const slider_span = document.querySelector("#slider-span");
+    const scale_range = document.querySelector("#scale-range");
+
+    slider_pin.addEventListener("click", function(e) {
+        slider_pin.classList.toggle("clicked");
+        if(localStorage.slider_pinned != "pinned") {
+            localStorage.slider_pinned = "pinned"
+        } else {
+            localStorage.slider_pinned = "";
+            slider_span.classList.remove("slider-fixed", "snap-right");
+        }
+    });
+    if(localStorage.slider_pinned == "pinned") slider_pin.classList.add("clicked");
+    
+    function onScroll(e) {
+        if(localStorage.slider_pinned != "pinned") return;
+
+        if(scrollY >= 80) {
+            slider_span.classList.add("slider-fixed");
+            if(window.innerWidth <= 1150) {
+                slider_span.classList.add("smaller");
+            }
+        } else {
+            slider_span.classList.remove("slider-fixed", "smaller");
+        }
+        
+        if(scrollY >= 112) {
+            slider_span.classList.add("snap-right");
+        } else {
+            slider_span.classList.remove("snap-right");
+        }
+    }
+    document.addEventListener("scroll", onScroll);
+    onScroll();
 
     function updateMediaBoxHeaders() {
         const media_boxes = document.querySelectorAll(".media-box");
@@ -52,13 +96,15 @@
         });
         updateThumbs();
     }
+
     function scaleOnInput() {
-        current_scale = +this.value || 1;
+        current_scale = +scale_range.value;
+        localStorage.setItem("scale", current_scale);
         document.querySelector("#tn-scale").innerText = current_scale.toFixed(2);
         window.dispatchEvent(new Event("resize"));
     }
     
-    document.querySelector("#scale-range").oninput = scaleOnInput;
+    scale_range.oninput = scaleOnInput;
     // Make sure that this happens last using requstAnimationFrame
     window.addEventListener("resize", () => requestAnimationFrame(onresize));
 
@@ -110,5 +156,6 @@
         })
     }
     setTimeout(scaleOnInput, 100);
+    updateThumbs();
     updateMediaBoxHeaders();
 })();
