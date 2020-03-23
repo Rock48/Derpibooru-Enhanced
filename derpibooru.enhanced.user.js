@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Derpibooru Enhanced
 // @namespace    http://moonlightsoftware.net/
-// @version      0.2.8
+// @version      0.2.9
 // @description  Adds some new features to derpibooru!
 // @author       Charles "Rock48" Quigley
 // @match        https://derpibooru.org/*
@@ -132,6 +132,7 @@
             const thumb_size = calcThumnailSizeToUse(dataset);
             if (picture = el.querySelector("picture")) {
                 let media_element = picture.firstElementChild;
+                if(dataset.uris[thumb_size].match(/webm/) && !document.cookie.match("webm=true")) return;
                 media_element.src = dataset.uris[thumb_size];
                 media_element.srcset = "";
                 media_element.style['object-fit'] = 'contain';
