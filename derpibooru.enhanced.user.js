@@ -6,6 +6,7 @@
 // @author       Charles "Rock48" Quigley
 // @match        https://derpibooru.org/*
 // @grant        none
+// @updateURL    https://github.com/Rock48/Derpibooru-Enhanced/raw/master/derpibooru.enhanced.user.js
 // ==/UserScript==
 
 (function () {
