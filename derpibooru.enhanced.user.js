@@ -25,12 +25,13 @@
     document.styleSheets[0].addRule(".media -box__header--small", "width:190px;!important;");
     document.styleSheets[0].addRule(".media-box__content--small", "width:190px;!important;");
     document.styleSheets[0].addRule(".interaction--view-or-dl:hover", "color:white; background-color:#4f95db");
-    document.styleSheets[0].addRule(".slider-fixed.snap-right", "right: 0;");
-    document.styleSheets[0].addRule(".slider-fixed.smaller", "right: 126px;");
+    document.styleSheets[0].addRule(".slider-fixed.snap-right", "right: 0 !important;");
+    document.styleSheets[0].addRule(".slider-fixed.smaller", "right: 126px");
     document.styleSheets[0].addRule(".slider-fixed", "position:fixed !important; background-color: #2e3a52; z-index: 1000; top: 0px; right: 359.16px;");
     document.styleSheets[0].addRule("#slider-span", "position:relative; display: inline-flex; height:32px; padding: 0 12px 0 12px;");
     document.styleSheets[0].addRule(".slider-pin", "display: inline-flex; height:32px; padding: 0 12px 0 12px; cursor:pointer; color: transparent; -webkit-text-stroke: 1px white;");
     document.styleSheets[0].addRule(".slider-pin i", "line-height: inherit;");
+    document.styleSheets[0].addRule(".slider-fixed.smaller", "right: 126px;");
     document.styleSheets[0].addRule(".slider-fixed.snap-right + .slider-pin", "z-index: 1000; position: fixed; top: 0px; right: 248.3px;");
     document.styleSheets[0].addRule(".slider-pin.clicked, .slider-pin:hover", "background: #253247;");
     document.styleSheets[0].addRule(".slider-pin.clicked", "color: white; -webkit-text-stroke: none;");
@@ -53,7 +54,7 @@
     function onScroll(e) {
         if(localStorage.slider_pinned != "pinned") return;
 
-        if(scrollY >= 80) {
+        if(scrollY >= slider_span.parentElement.offsetTop) {
             slider_span.classList.add("slider-fixed");
             if(window.innerWidth <= 1150) {
                 slider_span.classList.add("smaller");
@@ -62,7 +63,7 @@
             slider_span.classList.remove("slider-fixed", "smaller");
         }
         
-        if(scrollY >= 112) {
+        if(scrollY >= slider_span.parentElement.offsetTop + slider_span.parentElement.clientHeight) {
             slider_span.classList.add("snap-right");
         } else {
             slider_span.classList.remove("snap-right");
