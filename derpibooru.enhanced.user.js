@@ -19,12 +19,12 @@
     let current_scale = +localStorage.scale || 1;
     let current_size = 150;
 
-    document.styleSheets[0].addRule(".interaction--view-or-dl", "color:#4f95db");
+    document.styleSheets[0].addRule(".inetaction-view-dl-view-or-newtab", "color:#4f95db");
     document.styleSheets[0].addRule(".column-layout__left", "width:404px");
     document.styleSheets[0].addRule(".block__content.js-resizable-media-container", "flex-wrap:wrap; justify-content: center; display:flex;");
     document.styleSheets[0].addRule(".media -box__header--small", "width:190px;!important;");
     document.styleSheets[0].addRule(".media-box__content--small", "width:190px;!important;");
-    document.styleSheets[0].addRule(".interaction--view-or-dl:hover", "color:white; background-color:#4f95db");
+    document.styleSheets[0].addRule(".inetaction-view-dl-view-or-newtab:hover", "color:white; background-color:#4f95db");
     document.styleSheets[0].addRule(".slider-fixed.snap-right", "right: 0 !important;");
     document.styleSheets[0].addRule(".slider-fixed.smaller", "right: 126px");
     document.styleSheets[0].addRule(".slider-fixed", "position:fixed !important; background-color: #2e3a52; z-index: 1000; top: 0px; right: 359.16px;");
@@ -82,8 +82,10 @@
             if (!thumb) return;
             const img_data = thumb.dataset;
             const full_img_uri = JSON.parse(img_data.uris).full;
-            link_row.innerHTML += `<a class="interaction--view-or-dl" data-image-id="${img_data.imageId}" href="${full_img_uri}" rel="nofollow"><i class="fa fa-eye" title="View"></i></a>`;
-            link_row.innerHTML += `<a class="interaction--view-or-dl" data-image-id="${img_data.imageId}" href="${full_img_uri.replace("/img/view", "/img/download")}" rel="nofollow"><i class="fa fa-download" title="Download"></i></a>`;
+            link_row.innerHTML += `<a class="inetaction-view-dl-view-or-newtab" data-image-id="${img_data.imageId}" href="${full_img_uri}" rel="nofollow" title="View"><i class="fa fa-eye"></i></a>`;
+            link_row.innerHTML += `<a class="inetaction-view-dl-view-or-newtab" data-image-id="${img_data.imageId}" href="${full_img_uri.replace("/img/view", "/img/download")}" rel="nofollow" title="Download"><i class="fa fa-download"></i></a>`;
+            link_row.innerHTML += `<a class="inetaction-view-dl-view-or-newtab" data-image-id="${img_data.imageId}" target="_blank" href="/images/${img_data.imageId}" rel="nofollow" title="New Tab"><i class="fa fa-arrow-right"></i></a>`;
+            link_row.innerHTML += `<a class="inetaction-view-dl-view-or-newtab" data-image-id="${img_data.imageId}" target="_blank" href="${full_img_uri}" rel="nofollow" title="View (New Tab)"><i class="fa fa-eye"></i><i class="fa fa-arrow-right"></i></a>`;
         })
     }
 
