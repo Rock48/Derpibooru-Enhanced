@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Derpibooru Enhanced
 // @namespace    http://moonlightsoftware.net/
-// @version      0.3.0
+// @version      0.3.1
 // @description  Adds some new features to derpibooru!
 // @author       Charles "Rock48" Quigley
 // @match        https://derpibooru.org/*
@@ -12,6 +12,24 @@
 (function () {
     'use strict';
 
+		/**
+		 * Adds a CSS rule using the passed selector and rule list
+		 */
+		const addCSSRule = (() => {
+				const style = document.createElement("style");
+				style.appendChild(document.createTextNode(""));
+				document.head.appendChild(style);
+				return (
+						/**
+						 * @param {string} selector
+						 * @param {string[]} rules
+						 */
+						function(selector, ...rules) {
+								style.sheet.addRule(selector, rules.join("; "));
+						}
+				);
+		})();
+
     let thumbs = document.querySelectorAll(".thumb, .thumb_small");
 
     document.querySelector('.block__header .flex__right').innerHTML = `<span id="slider-span">Scale:&nbsp;&nbsp;<input type="range" min="0.25" max="4" value="${localStorage.scale || 1}" id="scale-range" step="0.05">&nbsp;&nbsp;<span id="tn-scale">${(+localStorage.scale || 1).toFixed(2)}</span></span><span class="slider-pin"><i class="fa fa-thumbtack"></i></span>${document.querySelector('.block__header .flex__right').innerHTML}`;
@@ -19,22 +37,22 @@
     let current_scale = +localStorage.scale || 1;
     let current_size = 150;
 
-    document.styleSheets[0].addRule(".inetaction-view-dl-view-or-newtab", "color:#4f95db");
-    document.styleSheets[0].addRule(".column-layout__left", "width:404px");
-    document.styleSheets[0].addRule(".block__content.js-resizable-media-container", "flex-wrap:wrap; justify-content: center; display:flex;");
-    document.styleSheets[0].addRule(".media -box__header--small", "width:190px;!important;");
-    document.styleSheets[0].addRule(".media-box__content--small", "width:190px;!important;");
-    document.styleSheets[0].addRule(".inetaction-view-dl-view-or-newtab:hover", "color:white; background-color:#4f95db");
-    document.styleSheets[0].addRule(".slider-fixed.snap-right", "right: 0 !important;");
-    document.styleSheets[0].addRule(".slider-fixed.smaller", "right: 126px");
-    document.styleSheets[0].addRule(".slider-fixed", "position:fixed !important; background-color: #2e3a52; z-index: 1000; top: 0px; right: 359.16px;");
-    document.styleSheets[0].addRule("#slider-span", "position:relative; display: inline-flex; height:32px; padding: 0 12px 0 12px;");
-    document.styleSheets[0].addRule(".slider-pin", "display: inline-flex; height:32px; padding: 0 12px 0 12px; cursor:pointer; color: transparent; -webkit-text-stroke: 1px white;");
-    document.styleSheets[0].addRule(".slider-pin i", "line-height: inherit;");
-    document.styleSheets[0].addRule(".slider-fixed.smaller", "right: 126px;");
-    document.styleSheets[0].addRule(".slider-fixed.snap-right + .slider-pin", "z-index: 1000; position: fixed; top: 0px; right: 248.3px;");
-    document.styleSheets[0].addRule(".slider-pin.clicked, .slider-pin:hover", "background: #253247;");
-    document.styleSheets[0].addRule(".slider-pin.clicked", "color: white; -webkit-text-stroke: none;");
+    addCSSRule(".inetaction-view-dl-view-or-newtab", "color:#4f95db");
+    addCSSRule(".column-layout__left", "width:404px");
+    addCSSRule(".block__content.js-resizable-media-container", "flex-wrap:wrap; justify-content: center; display:flex;");
+    addCSSRule(".media -box__header--small", "width:190px;!important;");
+    addCSSRule(".media-box__content--small", "width:190px;!important;");
+    addCSSRule(".inetaction-view-dl-view-or-newtab:hover", "color:white; background-color:#4f95db");
+    addCSSRule(".slider-fixed.snap-right", "right: 0 !important;");
+    addCSSRule(".slider-fixed.smaller", "right: 126px");
+    addCSSRule(".slider-fixed", "position:fixed !important; background-color: #2e3a52; z-index: 1000; top: 0px; right: 359.16px;");
+    addCSSRule("#slider-span", "position:relative; display: inline-flex; height:32px; padding: 0 12px 0 12px;");
+    addCSSRule(".slider-pin", "display: inline-flex; height:32px; padding: 0 12px 0 12px; cursor:pointer; color: transparent; -webkit-text-stroke: 1px white;");
+    addCSSRule(".slider-pin i", "line-height: inherit;");
+    addCSSRule(".slider-fixed.smaller", "right: 126px;");
+    addCSSRule(".slider-fixed.snap-right + .slider-pin", "z-index: 1000; position: fixed; top: 0px; right: 248.3px;");
+    addCSSRule(".slider-pin.clicked, .slider-pin:hover", "background: #253247;");
+    addCSSRule(".slider-pin.clicked", "color: white; -webkit-text-stroke: none;");
 
     const slider_pin = document.querySelector(".slider-pin");
     const slider_span = document.querySelector("#slider-span");
