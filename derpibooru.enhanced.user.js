@@ -12,28 +12,49 @@
 (function () {
     'use strict';
 
-		/**
-		 * Adds a CSS rule using the passed selector and rule list
-		 */
-		const addCSSRule = (() => {
-				const style = document.createElement("style");
-				style.appendChild(document.createTextNode(""));
-				document.head.appendChild(style);
-				return (
-						/**
-						 * @param {string} selector
-						 * @param {string[]} rules
-						 */
-						function(selector, ...rules) {
-								style.sheet.addRule(selector, rules.join("; "));
-						}
-				);
-		})();
+    // a friend added this function which didn't work for derpi
+    // keeping it here but commented in his memory
+    // const addCSSRuleOld = (() => {
+    //         const style = document.createElement("style");
+    //         style.appendChild(document.createTextNode(""));
+    //         document.head.appendChild(style);
+    //         return (
+    //                 /**
+    //                  * @param {string} selector
+    //                  * @param {string[]} rules
+    //                  */
+    //                 function(selector, ...rules) {
+    //                         style.sheet.addRule(selector, rules.join("; "));
+    //                 }
+    //         );
+    // })();
+
+    /**
+     * Adds a CSS rule using the passed selector and rule list
+     */
+    function addCSSRule(selector, rules) {
+        document.styleSheets[0].addRule(selector, rules);
+    }
+
+    const header = document.querySelector('.block__header');
+
+    // Don't bother unless on a search page
+    if(!header.querySelector('.block__header__title')) return;
+
+    header.classList.add("flex");
+    
+    let header_right = header.querySelector('.flex__right');
+
+    if(!header_right) {
+        header_right = document.createElement("div");
+        header_right.classList.add("flex__right");
+        header.appendChild(header_right);
+    }
+
+    header_right.innerHTML = `<span id="slider-span">Scale:&nbsp;&nbsp;<input type="range" min="0.25" max="4" value="${localStorage.scale || 1}" id="scale-range" step="0.05">&nbsp;&nbsp;<span id="tn-scale">${(+localStorage.scale || 1).toFixed(2)}</span></span><span class="slider-pin"><i class="fa fa-thumbtack"></i></span>${header_right.innerHTML}`;
+
 
     let thumbs = document.querySelectorAll(".thumb, .thumb_small");
-
-    document.querySelector('.block__header .flex__right').innerHTML = `<span id="slider-span">Scale:&nbsp;&nbsp;<input type="range" min="0.25" max="4" value="${localStorage.scale || 1}" id="scale-range" step="0.05">&nbsp;&nbsp;<span id="tn-scale">${(+localStorage.scale || 1).toFixed(2)}</span></span><span class="slider-pin"><i class="fa fa-thumbtack"></i></span>${document.querySelector('.block__header .flex__right').innerHTML}`;
-
     let current_scale = +localStorage.scale || 1;
     let current_size = 150;
 
