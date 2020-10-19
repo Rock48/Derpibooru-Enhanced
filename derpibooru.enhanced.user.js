@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Derpibooru Enhanced
 // @namespace    http://moonlightsoftware.net/
-// @version      0.3.1
+// @version      0.3.2
 // @description  Adds some new features to derpibooru!
 // @author       Charles "Rock48" Quigley
 // @match        https://derpibooru.org/*
