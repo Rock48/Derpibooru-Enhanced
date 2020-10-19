@@ -7,3 +7,4 @@ A userscript that adds additional features to the My Little Pony fan art site [D
 * Ability to scale thumbnails smoothly. Higher quality images will be automatically loaded
 * View + New Tab and Download buttons on image headers
 * Thumnails are now centered
+* Press `=` to open direct links while on image pages
