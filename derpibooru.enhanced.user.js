@@ -36,9 +36,17 @@
         document.styleSheets[0].addRule(selector, rules);
     }
 
-    const header = document.querySelector('.block__header');
+    const header = document.querySelector('#imagelist-container .block__header');
 
-    // Don't bother unless on a search page
+    // Add view hotkey to image pages
+    const vs_btn = document.querySelector(".image-metabar [title='View (no tags in filename)']");
+    if(vs_btn) {
+        vs_btn.innerText += " (=)";
+        document.addEventListener("keydown", (e) => e.key == "=" ? vs_btn.click() : "");
+        return; // Nothing else needs to be done here.
+    }
+
+    // Don't bother with anything else unless on a search page
     if(!header.querySelector('.block__header__title')) return;
 
     header.classList.add("flex");
